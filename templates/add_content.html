@@ -1,0 +1,103 @@
+{% extends "base.html" %} 
+
+{% block title %} Add Content {% endblock %} 
+
+{% block content %}
+
+
+<form id = "form" class="form-group" action="/admin/upload" method="POST" enctype="multipart/form-data">
+
+<div class = "input-group w-75">
+  <label for="Bookname">Book Title</label>
+<input class="mx-3 form-control" type="text" name="Bookname" id="Bookname" v /> 
+<span class="form-text" id = "booktitle-error"> *required </span>
+</div>
+  
+  
+<div class = "input-group w-75">
+  <label for="Filename">Filename</label>
+<input class="mx-3 form-control" type="text" name="Filename" id="Filename" readonly="readonly" v />
+<span class="form-text" id = "filename-error"> *required </span>
+</div>
+
+<div class = "input-group w-75">
+  <label for="Author">Author</label>
+<input class="mx-3 form-control" type="text" name="Author" id="Authorname" v />
+<span class="form-text" id = "authorname-error"> *required </span>
+
+</div>
+
+<div class="input-group w-100">
+  
+  <label for="File">File</label>
+  <input class="mx-3 form-control"type="file" name="File" id="File" value="" />
+  <div>
+<span class="form-text" id = "file-error"> *required </span>
+</div>
+</div>
+  <button class="btn-primary my-3" type="submit">Submit</button>
+</form>
+
+{% endblock %}
+
+
+{% block script %}
+
+
+<script type="text/javascript" charset="utf-8">
+  
+  const file = document.getElementById("File")
+  const author = document.getElementById("Authorname")
+  const filename = document.getElementById("Filename")
+  const booktitle = document.getElementById("Bookname")
+  const form = document.getElementById("form")
+  
+  const authornameerror = document.getElementById("authorname-error")
+  const booktitleerror = document.getElementById("booktitle-error")
+  const filenameerror = document.getElementById("filename-error")
+  const fileerror = document.getElementById("file-error")
+  
+  file.addEventListener('change', (e) => {
+    filename.value = file.value.replace("C:\\fakepath\\", "")
+    
+  })
+  
+  
+  form.addEventListener('submit', (e) => {
+    
+    
+    
+    
+    if (author.value === ''){
+      
+      authornameerror.innerText = "Author is required*"
+      e.preventDefault()
+    }
+    
+    if (booktitle.value === ''){
+      
+      booktitleerror.innerText = "Book Title is required*"
+      e.preventDefault()
+    }
+    
+    if (file.value === ''){
+      
+      fileerror.innerText = "File is required*"
+      e.preventDefault()
+    }
+    
+    if (filename.value === ''){
+      
+      filenameerror.innerText = "File name is required*"
+      e.preventDefault()
+    }
+    
+  
+    
+  })
+  
+  
+  
+</script>
+
+{% endblock %} 

@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+
+{% block title %} Search {% endblock %}
+
+{% block content %}
+
+<form action="/search" method="post" accept-charset="utf-8">
+  
+  <div class = "form-group input-group w-50">
+    
+    <input class = "form-control" type="text" name="search" id="" value="" autocomplete="off"/>
+    <button class = "btn-primary">Search</button>
+  </div>
+  
+  
+</form>
+
+{% endblock %}

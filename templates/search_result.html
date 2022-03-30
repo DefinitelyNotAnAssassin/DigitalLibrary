@@ -13,10 +13,10 @@
       {{i.bookname}}
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" type="submit">View</button>
+      <button name="{{i.filename}}" onclick="confirmation(this)" class="btn btn-primary" type="submit">View</button>
     </div>
     <div class="col-auto">
-      <button name="{{i.filename}}" id="{{i.bookname}}"onclick="confirmation(this)" class="btn btn-primary" type="submit">Download</button>
+      <button name="{{i.filename}}" id="{{i.bookname}}"onclick="dlconfirmation(this)" class="btn btn-primary" type="submit">Download</button>
     </div>
   </div>
 </div>
@@ -34,14 +34,15 @@
 <script type="text/javascript" charset="utf-8">
   
   function confirmation(e){
-    if(confirm(`Proceed to download ${e.id}?`)){
-      
+    
       window.location.replace(`${window.origin}/view/${e.name}`)
+  
+  }
+    
+function dlconfirmation(e){
+      window.location.replace(`${window.origin}/download/${e.name}`)
       
       
-    }
-    
-    
   }
   
   

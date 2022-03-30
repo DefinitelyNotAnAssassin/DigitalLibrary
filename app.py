@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 
-app.config["FILE_UPLOAD"] = "/storage/emulated/0/Projects/Digital_Library/files"
+app.config["FILE_UPLOAD"] = f"{os.getcwd()}/files/"
 db = SQLAlchemy(app)
 
 
@@ -74,4 +74,4 @@ def view(path):
 
 if __name__ == "__main__":
   app.run(debug = True)
-  db.create_all()
+  #db.create_all()

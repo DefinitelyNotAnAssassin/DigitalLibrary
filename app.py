@@ -26,7 +26,6 @@ class libraryfiles(db.Model):
     self.filename = filename
     self.author = author
 
-
 @app.route("/")
 def index():
   return render_template("index.html")
@@ -72,6 +71,14 @@ def view(path):
   return render_template("view.html", filename = f"{path}")
 
 
+@app.route("/viewer")
+def register():
+  return render_template("viewer.html")
+
+@app.route("/test")
+def test():
+  return render_template("test.htmml")
+
 if __name__ == "__main__":
   app.run(debug = True)
-  #db.create_all()
+ # db.create_all()

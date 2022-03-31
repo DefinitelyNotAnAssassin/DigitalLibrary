@@ -65,7 +65,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   defaultUrl: {
-    value: "compressed.tracemonkey-pldi-09.pdf",
+    value: "/download/Rules-on-evidence-2022.pdf",
     kind: OptionKind.VIEWER
   },
   defaultZoomValue: {
@@ -218,7 +218,7 @@ const defaultOptions = {
     kind: OptionKind.WORKER
   },
   workerSrc: {
-    value: "../build/pdf.worker.js",
+    value: "https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js",
     kind: OptionKind.WORKER
   }
 };

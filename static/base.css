@@ -1,0 +1,22 @@
+body, html, .container, .form-group, .w-100, .row, .col-lg-3{
+  background: #343F4F;
+  color: #fff
+}
+
+.card-image-top, .card, .card-body{
+background: #343F4F
+
+}
+.navbar {
+  /*overflow: hidden;*/
+  background: #343F4F;
+ /* position: fixed;  Set the navbar to fixed position 
+  top: 0; Position the navbar at the top of the page 
+  width: 100%;  Full width */ 
+}
+
+
+
+.card-text, .card-title{
+color: #fff;
+}

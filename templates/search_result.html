@@ -2,25 +2,55 @@
 
 {% block title %} Result {% endblock %} 
 
+{% block head %} 
+
+<link rel="stylesheet" href="{{url_for('static',filename = 'main.css')}}" title="" type="" />
+{% endblock %}
+
+
+
 {% block content %}
+
+
+<div class="everything">
+  
+
+<form action="/search" method="post" accept-charset="utf-8">
+  
+
+ <div class="my-5 col-md-12 input-group mb-4">
+         <input id = "search" name="search" placeholder = "Enter book title"type="text" autocomplete="off" class="form-control form-control-sm bg-transparent">
+         
+               <object class="icon mx-3 my-1" data="{{url_for('static', filename = '/bootstrap-icons-1.8.1/search.svg')}}" width="20" height="20"> </object>
+         
+         </input> 
+         
+         <!--
+         
+         <span class="input-group-btn">
+         <button id = "btn"class="btn btn-primary">Search title  </button>
+        </span>
+-->
+</div>
+
+
 
 {% for i in file %}
 
-<div class="card container-auto my-4">
+<div class="card bg-transparent container-auto my-4">
   
   <div class="row my-2">
     <div class="col my-1">
     {{i.bookname}}
     </div>
-    <div class="col-auto">
-      <button name="{{i.filename}}" onclick="confirmation(this)" class="btn btn-primary" type="submit">View</button>
+    <div class="col-auto bg-transparent">
+      
+      <object class="mx-3" data="{{url_for('static', filename = '/bootstrap-icons-1.8.1/eye-fill.svg')}}" width="30" height="30"> </object>
     </div>
-    <div class="col-auto">
-      <button name="{{i.filename}}" id="{{i.bookname}}"onclick="dlconfirmation(this)" class="btn btn-primary" type="submit">Download</button>
-    </div>
+    
   </div>
 </div>
-
+</div>
 {% endfor %}
 
 
@@ -38,13 +68,7 @@
       window.location.replace(`${window.origin}/view/${e.name}`)
   
   }
-    
-function dlconfirmation(e){
-  alert(e.name)
-      window.location.replace(`${window.origin}/download/${e.name}`)
-      
-      
-  }
+  
   
   
 </script>

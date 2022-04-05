@@ -20,12 +20,12 @@ class libraryfiles(db.Model):
   bookname = db.Column("bookname", db.String(100))
   filename = db.Column("filename", db.String(255))
   author = db.Column("author", db.String(75))
-  
-  def __init__(self, bookname, filename, author):
+  category = db.Column("category", db.String(75))
+  def __init__(self, bookname, filename, author, category):
     self.bookname = bookname
     self.filename = filename
     self.author = author
-
+    self.category = category
 
 
 
@@ -41,8 +41,9 @@ def add_content():
 def upload():
   booktitle = request.form["Bookname"]
   file_name = request.form["Filename"].replace(" ", "-")
+  category = request.form["Category"]
   author = request.form["Author"]
-  addFile = libraryfiles(booktitle, file_name, author)
+  addFile = libraryfiles(booktitle, file_name, author, category)
   db.session.add(addFile)
   db.session.commit()
   print(request.files)
@@ -80,8 +81,8 @@ def register():
 
 @app.route("/test")
 def test():
-  return render_template("test.htmml")
+  return render_template("testcard.html")
 
 if __name__ == "__main__":
   app.run(debug = True)
- # db.create_all()
+  #db.create_all()

@@ -12,46 +12,71 @@
 {% block content %}
 
 
-<div class="everything">
-  
-
-<form action="/search" method="post" accept-charset="utf-8">
-  
-
- <div class="my-5 col-md-12 input-group mb-4">
-         <input id = "search" name="search" placeholder = "Enter book title"type="text" autocomplete="off" class="form-control form-control-sm bg-transparent">
+ <div class ="img d-flex flex-column min-vh-100 justify-content-center align-items-center">  
+        <form id="form" action = "/search" method = "post">
+         <div class="form-row align-items-center">
+         <h1 class = "mx-auto mb-3"> CAA - Digital Library</h1>
+         <h6 class = "form-text text-muted">Over 220,000 websites use Crazy Egg to improve what's, working for what isn't and test new ideas.
+         </h6>
          
-               <object class="icon mx-3 my-1" data="{{url_for('static', filename = '/bootstrap-icons-1.8.1/search.svg')}}" width="20" height="20"> </object>
-         
-         </input> 
-         
-         <!--
-         
+           <div class="col-md-12 input-group mb-4">
+         <input id = "search" name="search" placeholder = "Enter book title"type="text" autocomplete="off" class="form-control form-control-sm bg-transparent" name = "username"> </input> 
          <span class="input-group-btn">
          <button id = "btn"class="btn btn-primary">Search title  </button>
         </span>
--->
 </div>
-
-
 
 {% for i in file %}
 
-<div class="card bg-transparent container-auto my-4">
-  
+<!--
+<div class="colorhover card bg-transparent container-auto my-4">
   <div class="row my-2">
     <div class="col my-1">
-    {{i.bookname}}
+    <a>{{i.bookname}}</a>
     </div>
-    <div class="col-auto bg-transparent">
-      
-      <object class="mx-3" data="{{url_for('static', filename = '/bootstrap-icons-1.8.1/eye-fill.svg')}}" width="30" height="30"> </object>
-    </div>
+  
     
+    <div class="col-auto bg-transparent">
+      <img onclick="confirmation(this)"class="mx-3" src="{{url_for('static', filename = '/bootstrap-icons-1.8.1/eye-fill.svg')}}" width="30" height="30" name = "{{i.filename}}"> </img>
+    </div>
   </div>
 </div>
+-->
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card card-flip h-100">
+        <div class="card-front text-white bg-dark">
+          <div class="card-body">
+            <i class="fa fa-search fa-5x float-right"></i>
+            <p class="card-text">{{i.bookname}}</p>
+            
+          </div>
+        </div>
+        <div class="card-back bg-white">
+          <div class="card-body">
+            <p class="card-text">{{i.category}}</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
 {% endfor %}
+    
+           
+         </div>
+       </form>
+       </div>
+
+
+
 
 
 
@@ -64,9 +89,11 @@
 <script type="text/javascript" charset="utf-8">
   
   function confirmation(e){
-    
       window.location.replace(`${window.origin}/view/${e.name}`)
+  }
   
+  function search(){
+  alert("hey")
   }
   
   

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+  
+  
+  
+  
+  
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,21 +55,21 @@
 
 
 
-<div class="space"></div>
+<div class="space card"></div>
     
 
 
-<div class="text-card">
+<div class="text-card card">
 <h1 class="reveal">About Us</h1>
-<h4 class="text-card-content reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h4>
+<p class="text-card-content reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </div>
 
 
 
-<div class="space2"></div>
-<div class="space3"></div>
+<div class="space2 card"></div>
+<div class="space3 carf"></div>
 
-<div class="text-card-right">
+<div class="text-card-right card">
 
 <h1 class="title-right reveal">Contact Us</h1>
 
@@ -72,9 +78,9 @@
 </div>
 
 
-<div class="space4">
+<div class="space4 card">
 </div>
-<div class="space5"></div>
+<div class="card space5"></div>
 
 
 
@@ -95,9 +101,11 @@
 
       if(revealtop < windowheight - revealpoint){
         reveals[i].classList.add('active');
+        reveals[i].classList.add('text-card-content-type');
       }
       else{
         reveals[i].classList.remove('active');
+        reveals[i].classList.remove('text-card-content-type');
       }
     }
   }

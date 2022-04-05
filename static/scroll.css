@@ -8,51 +8,70 @@
 
 .spacer{
   
-  width: 100vw;
+  width: 100vw!important;
   height: 50vh;
   position: relative;
   
 }
 
 .space{
-  width: 100%;
+  width: 100%!important;
   height: 50vh;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)), 
-    url('library.jpeg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-blend-mode: ;
-  color: #fff;
-  opacity: 1;
+  
 }
 
 
 
 .space2{
-  width: 100%;
+  width: 100%!important;
   height: 50vh;
-  background-color: gray!important;
+  
   
 }
 
 
+.space2:hover {
+    border: 1px solid #4195fc; /* some kind of blue border */
+
+    /* other CSS styles */
+
+    /* round the corners */
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+
+
+    /* make it glow! */
+    -webkit-box-shadow: 0px 0px 10px #4195fc;
+       -moz-box-shadow: 0px 0px 10px #4195fc;
+            box-shadow: 0px 0px 15px #4195fc; 
+            transition: 2s;
+}
 .space3{
-  width: 100%;
+  width: 100%!important;
   height: 50vh;
-  background: red!important;
 }
 
 .space4{
-  width: 100%;
+  width: 100vw!important;
   height: 50vh;
-  background: yellow!important;
+  
 }
 
 .space5{
-  width: 100%;
+  width: 100vw!important;
   height: 50vh;
-  background: orange!important;
+  background: blue!important;
 }
+
+
+.space5:hover{
+  transform: scale(1.1); 
+  background: #ffa44f!important;
+  transition: 1s;
+  
+}
+
 
 html{
   background-color: black;

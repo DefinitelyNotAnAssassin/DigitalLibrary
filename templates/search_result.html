@@ -50,8 +50,16 @@
         <div class="card-front text-white bg-dark">
           <div class="card-body">
             <i class="fa fa-search fa-5x float-right"></i>
-            <p class="card-text">{{i.bookname}}</p>
-            
+            <div class="row my-2">
+    <div class="col my-1">
+    <a>{{i.bookname}}</a>
+    </div>
+  
+    
+    <div class="col-auto bg-transparent">
+      <img onclick="confirmation(this)"class="mx-3 my-1" src="{{url_for('static', filename = '/bootstrap-icons-1.8.1/eye-fill.svg')}}" width="30" height="30" name = "{{i.filename}}"> </img>
+    </div>
+  </div>
           </div>
         </div>
         <div class="card-back bg-white">

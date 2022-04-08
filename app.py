@@ -1,7 +1,7 @@
 from flask import * 
 import sqlite3
 import os
-import sqlalchemy
+from sqlalchemy import and_, or_
 from flask_sqlalchemy import SQLAlchemy
 
 conn = sqlite3.connect("library.db")
@@ -55,13 +55,16 @@ def upload():
 @app.route("/search", methods = ["GET", "POST"])
 def search():
   if request.method == "GET":
-    return render_template("search.html")
+    return redirect(url_for("index"))
   elif request.method == "POST":
     search = f"%{request.form['search']}%"
-    file = libraryfiles.query.filter(libraryfiles.bookname.like(search)).all()
+    exactsearch = request.form['search']
+    category = f"{request.form['category']}" 
+    exact = libraryfiles.query.filter(and_(libraryfiles.bookname == f"{exactsearch}", libraryfiles.category == f"{category}")).all()
+    file = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search),libraryfiles.category == category)).all()
     
     
-    return render_template("search_result.html", search = search, file = file)
+    return render_template("search_result.html", search = search, file = file, exact = exact)
   
 @app.route("/download/<path:path>")
 def download(path):

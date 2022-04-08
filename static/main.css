@@ -3,6 +3,12 @@
 
 @media screen and (max-width: 1280px)
 {
+.card{
+  
+  width: 70vw!important;
+}
+  
+  
 .text-card{
   height: 35vh;
     max-height: 60vh;
@@ -29,8 +35,18 @@
 .transparent-input{
   background: black;
 }
-@media screen and (max-width: 500px)
+@media screen and (max-width: 600px)
 {
+  
+  .mobile{
+    width: 50vw;
+  }
+  
+  .card{
+  
+  width: 95vw!important;
+}
+
 .text-card{
   height: 36vh;
     max-height: 35vh;
@@ -107,6 +123,9 @@ a:hover {
   box-shadow: inset 250px 0 0 0 #54b3d6;;
   transition: 0.3s;
 }
+
+
+
 
 
 

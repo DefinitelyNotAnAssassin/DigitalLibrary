@@ -5,7 +5,15 @@
   
   
   
-  
+  <script src="{{url_for('static', filename = "jquery.js")}}" type="text/javascript" charset="utf-8"></script>
+
+<script src="{{url_for('static', filename = "/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.js")}}" type="text/javascript" charset="utf-8"></script>
+
+<link rel="stylesheet" href="{{url_for('static', filename = "/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.css")}}" type="text/css" media="all" />
+
+<link rel="stylesheet" href="{{url_for('static', filename = "/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.min.css")}}" type="text/css" media="all" />
+
+
   
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +44,7 @@
          </h6>
          
            <div class="col-md-12 input-group mb-4">
-         <input id = "search" name="search" placeholder = "Enter book title"type="text" autocomplete="off" class="form-control form-control-sm bg-transparent" name = "username"> </input> 
+         <input id = "search" name="search" placeholder = "Enter book title"type="text" class="form-control form-control-sm bg-transparent" name = "username" autocomplete="off"> </input> 
         
     
         <select class="form-select" name="category" id="category">
@@ -127,8 +135,51 @@
       }
     }
   }
-  
+
  </script>
+
+
+
+<script type="text/javascript" charset="utf-8">
+  
+  
+  $('select').on('change', function() {
+  
+  let dataset = {
+    {% for i in autosuggest %}
+    "{{i.bookname}}": "{{i.category}}".replace("&amp;", "&"),
+    {% endfor %}
+    abc: "efg"
+  }
+  
+  Object.filter = (obj, predicate) => 
+                  Object.fromEntries(Object.entries(obj).filter(predicate));
+
+let filtered = Object.filter(dataset, ([name, category]) => category === `${this.value}`)
+
+  
+  
+  
+  
+  let availableTags = Object.keys(filtered)
+    
+    $( "#search" ).autocomplete({
+      source: availableTags
+    });
+
+});
+  
+  
+  $( function() {
+    
+    
+    
+    $( "#search" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+
 
 
 </body>

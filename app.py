@@ -44,7 +44,8 @@ class messages(db.Model):
 
 @app.route("/")
 def index():
-  return render_template("index.html")
+  autosuggest = libraryfiles.query.all()
+  return render_template("index.html", autosuggest = autosuggest)
 
 @app.route("/admin/add_content")
 def add_content():
@@ -71,13 +72,12 @@ def search():
     return redirect(url_for("index"))
   elif request.method == "POST":
     search = f"%{request.form['search']}%"
-    exactsearch = request.form['search']
     category = f"{request.form['category']}" 
-    exact = libraryfiles.query.filter(and_(libraryfiles.bookname == f"{exactsearch}", libraryfiles.category == f"{category}")).all()
+    
     file = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search),libraryfiles.category == category)).all()
-    
-    
-    return render_template("testresult.html", search = search, file = file, exact = exact)
+    rating = messages.query.filter(messages.bookname.like(search)).all()
+    autosuggest = libraryfiles.query.all()
+    return render_template("testresult.html", search = search, file = file, rating = rating, autosuggest = autosuggest)
   
 @app.route("/download/<path:path>")
 def download(path):

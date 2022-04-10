@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block title %} Test Result {% endblock %} 
+
+
+
+{% block content %}
+
+
+{% for i in file %}
+
+<div class="card" style="width: 100vw;">
+  <div class="card-body">
+    <h5 class="card-title mb-1">{{i.bookname}}</h5>
+    <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.author}}     |     5/5</h6>
+    <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.category}}</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="/feedback/{{i.bookname}}" class="card-link">Rate</a>
+    <a href="#" class="card-link">Read</a>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endblock %} 

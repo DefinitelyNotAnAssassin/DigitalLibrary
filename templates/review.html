@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{{url_for('static', filename = 'review.css')}}" type="text/css" media="all" />
+
+{% endblock %}
+
+
+
+{% block content %}
+{{bookname}}
+
+
+
+<div class="scrollable mb-5">
+{% for i in comment %}
+  
+  <div class="card mb-2" style="width: 100vw;">
+  <div class="card-body">
+    <h5 class="card-title mb-1">{{i.sender}}</h5>
+     <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.rating}}/5</h6>
+    <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.date}}</h6>
+    <p class="card-text">{{i.content}}</p>
+  
+  </div>
+</div>
+
+{% endfor %}
+</div>
+
+
+  <div class ="img d-flex flex-column justify-content-center align-items-center">  
+        <form id="form" action = "/addfeedback" method = "post">
+         <div class="form-row align-items-center">
+           
+   <div class="col-md-12 input-group mb-4">
+    
+    <input type="text" name="username" id="username" class="form-control" placeholder="Name" autocomplete="off" />
+    
+   </div>       
+           
+    <div class="col-md-12 input-group mb-4">
+      <input class="" type="hidden" name="bookname" id="" value="{{bookname}}" />
+      </div>
+           <div class="col-md-12 input-group mb-4">
+        <select name="rate" id="rate" class="form-select">
+          <option value = "1" selected>1</option>
+         <option value = "2" selected>2</option>
+          <option value = "3" selected>3</option>
+          <option value = "4" selected>4</option>
+          <option value = "5" selected>5</option>
+          
+        </select>
+      
+  
+</div>
+
+            <div class="col-md-12 input-group mb-4">
+      <textarea name="feedback" id=content rows="8" cols="40" placeholder="Enter feedback"class="form-control" ></textarea>
+      </div>
+
+
+  <button class = "btn btn-primary" type="submit">Add feedback</button>
+  
+         </div>
+         
+         
+         
+       </form>
+       </div>
+  
+</form>
+
+{% endblock %}

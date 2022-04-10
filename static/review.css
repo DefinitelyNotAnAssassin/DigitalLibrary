@@ -1,0 +1,9 @@
+.scrollable{
+  height: 50vh;
+  padding-top: 5vh;
+  overflow-y: scroll;
+}
+
+.text{
+  
+}

@@ -3,7 +3,7 @@ import sqlite3
 import os
 from sqlalchemy import and_, or_
 from flask_sqlalchemy import SQLAlchemy
-
+from datetime import date
 conn = sqlite3.connect("library.db")
 c = conn.cursor()
 
@@ -26,8 +26,21 @@ class libraryfiles(db.Model):
     self.filename = filename
     self.author = author
     self.category = category
+    
+class messages(db.Model):
+  _id = db.Column("id", db.Integer, primary_key= True)
+  bookname = db.Column("bookname", db.String(100))
+  content = db.Column("content", db.String(1000))
+  date = db.Column("date", db.String(100))
+  sender = db.Column("sender", db.String(100))
+  rating = db.Column("rating", db.String(25))
 
-
+  def __init__(self, bookname, content, date, sender, rating):
+    self.bookname = bookname
+    self.content = content
+    self.date = date
+    self.sender = sender
+    self.rating = rating
 
 @app.route("/")
 def index():
@@ -64,7 +77,7 @@ def search():
     file = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search),libraryfiles.category == category)).all()
     
     
-    return render_template("search_result.html", search = search, file = file, exact = exact)
+    return render_template("testresult.html", search = search, file = file, exact = exact)
   
 @app.route("/download/<path:path>")
 def download(path):
@@ -86,6 +99,30 @@ def register():
 def test():
   return render_template("testcard.html")
 
+@app.route("/feedback/<bookname>")
+def feedback(bookname):
+  comment = messages.query.filter(messages.bookname == bookname).all()
+  
+  
+  return render_template("review.html", bookname = bookname, comment = comment)
+
+
+@app.route("/addfeedback", methods = ["POST"])
+def addfeedback():
+  sender = request.form["username"]
+  comment = request.form["feedback"]
+  rating = request.form["rate"]
+  bookname = request.form["bookname"]
+  currentdate = date.today()
+  addMsg = messages(bookname, comment, currentdate.strftime("%m/%d/%Y"), sender, rating)
+  db.session.add(addMsg)
+  db.session.commit()
+  
+  
+  return redirect(url_for('index'))
+  
+  
+  
 if __name__ == "__main__":
   app.run(debug = True)
-  #db.create_all()
+  db.create_all()

@@ -3,7 +3,9 @@ import sqlite3
 import os
 from sqlalchemy import and_, or_
 from flask_sqlalchemy import SQLAlchemy
-from datetime import date
+from datetime import date, timedelta
+import time
+
 conn = sqlite3.connect("library.db")
 c = conn.cursor()
 
@@ -12,6 +14,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 
 app.config["FILE_UPLOAD"] = f"{os.getcwd()}/files/"
+
+app.secret_key = "ThisIsSupposedToBeSecured"
+app.permanent_session_lifetime = timedelta(minutes=60)
+
+
 db = SQLAlchemy(app)
 
 
@@ -42,10 +49,19 @@ class messages(db.Model):
     self.sender = sender
     self.rating = rating
 
+
+booktitles = libraryfiles.query.all()
+titulo = []
+for i in booktitles:
+  titulo.append(i.bookname)
+
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
 @app.route("/")
 def index():
-  autosuggest = libraryfiles.query.all()
-  return render_template("index.html", autosuggest = autosuggest)
+  return render_template("index.html", autosuggest = booktitles)
 
 @app.route("/admin/add_content")
 def add_content():
@@ -77,7 +93,7 @@ def search():
     file = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search),libraryfiles.category == category)).all()
     rating = messages.query.filter(messages.bookname.like(search)).all()
     autosuggest = libraryfiles.query.all()
-    return render_template("testresult.html", search = search, file = file, rating = rating, autosuggest = autosuggest)
+    return render_template("testresult.html", search = search, file = file, rating = rating, autosuggest = booktitles)
   
 @app.route("/download/<path:path>")
 def download(path):
@@ -101,10 +117,11 @@ def test():
 
 @app.route("/feedback/<bookname>")
 def feedback(bookname):
-  comment = messages.query.filter(messages.bookname == bookname).all()
-  
-  
-  return render_template("review.html", bookname = bookname, comment = comment)
+  if bookname in titulo:
+    comment = messages.query.filter(messages.bookname == bookname).all()
+    return render_template("review.html", bookname = bookname, comment = comment)
+  elif bookname not in titulo:
+    abort(404)
 
 
 @app.route("/addfeedback", methods = ["POST"])
@@ -117,12 +134,31 @@ def addfeedback():
   addMsg = messages(bookname, comment, currentdate.strftime("%m/%d/%Y"), sender, rating)
   db.session.add(addMsg)
   db.session.commit()
-  
-  
   return redirect(url_for('index'))
   
   
+@app.route("/addreadlist/<bookname>")
+def addreadlist(bookname):
+  if "read_later" not in session:
+    session["read_later"] = []
   
+  if bookname not in titulo:
+    return redirect(redirect_url())
+  elif bookname in titulo and bookname not in session["read_later"]:
+    a = session["read_later"]
+    a.append(bookname)
+    session["read_later"] = a
+    print(f"{bookname} Added to the session")
+    
+    return redirect(redirect_url())
+  else:
+    return redirect(redirect_url())
+  
+@app.route("/readlist")
+def readlist():
+  print(session["read_later"])
+  return render_template("readlist.html", bookname = session["read_later"], file = booktitles)
+
 if __name__ == "__main__":
   app.run(debug = True)
   db.create_all()

@@ -12,6 +12,7 @@
 
 {% for i in file %}
 
+{% if i.bookname in bookname %}
 <div class="card" style="width: 100vw;">
   <div class="card-body">
     <h5 class="card-title mb-1">{{i.bookname}}</h5>
@@ -27,6 +28,8 @@
   </div>
 </div>
 
+{% endif %}
+
 {% endfor %}
 
 {% endblock %} 
@@ -37,24 +40,6 @@
 <script src="{{url_for('static', filename = "jquery.js")}}" type="text/javascript" charset="utf-8"></script>
 
 <script src="{{url_for('static', filename = "/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.js")}}" type="text/javascript" charset="utf-8"></script>
-
-<script type="text/javascript" charset="utf-8">
-  
-  $( function() {
-    var availableTags = [
-      
-      {% for a in autosuggest %}
-      
-      "{{a.bookname}}",
-      
-      {% endfor %}
-    "entry",
-    ];
-    $( "#tags" ).autocomplete({
-      source: availableTags
-    });
-  } );
-  </script>
 
  
   

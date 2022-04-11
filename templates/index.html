@@ -109,9 +109,21 @@
 <div class="card space5"></div>
 
 
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="static/bootstrap-icons-1.8.1/person.svg" class="rounded me-2" alt="...">
+      <strong class="me-auto">Library Guide</strong>
+      <small></small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body my-3">
+      Good day, I'm your guide for CAA - Digital Library. Have questions? Follow <a href="/faq">this link</a>
+    </div>
+  </div>
+</div>
 
-
-
+<script src="{{url_for('static', filename = '/bootstrap-5.1.3-dist/bootstrap-5.1.3-dist/js/bootstrap.min.js' )}}" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
   window.addEventListener('scroll', reveal);
@@ -156,12 +168,7 @@
                   Object.fromEntries(Object.entries(obj).filter(predicate));
 
 let filtered = Object.filter(dataset, ([name, category]) => category === `${this.value}`)
-
-  
-  
-  
-  
-  let availableTags = Object.keys(filtered)
+let availableTags = Object.keys(filtered)
     
     $( "#search" ).autocomplete({
       source: availableTags
@@ -169,18 +176,19 @@ let filtered = Object.filter(dataset, ([name, category]) => category === `${this
 
 });
   
-  
-  $( function() {
-    
-    
-    
-    $( "#search" ).autocomplete({
-      source: availableTags
-    });
-  } );
   </script>
 
+<!-- TOAST -->
+<script type="text/javascript" charset="utf-8">
+  
+var toastLiveExample = document.getElementById('liveToast')
 
+bootstrap.Toast.Default.delay = 50000
+window.onload = function(){
 
+var toast = new bootstrap.Toast(toastLiveExample)
+    toast.show()
+}
+</script>
 </body>
 </html>

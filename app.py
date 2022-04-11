@@ -156,8 +156,16 @@ def addreadlist(bookname):
   
 @app.route("/readlist")
 def readlist():
-  print(session["read_later"])
-  return render_template("readlist.html", bookname = session["read_later"], file = booktitles)
+  if "read_later" in session:
+   return render_template("readlist.html", bookname = session["read_later"], file = booktitles)
+  elif "read_later" not in session:
+    return redirect(redirect_url())
+
+
+@app.route("/faq")
+def faq():
+  return render_template("faq.html")
+
 
 if __name__ == "__main__":
   app.run(debug = True)

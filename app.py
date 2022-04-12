@@ -93,7 +93,7 @@ def search():
     file = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search),libraryfiles.category == category)).all()
     rating = messages.query.filter(messages.bookname.like(search)).all()
     autosuggest = libraryfiles.query.all()
-    return render_template("testresult.html", search = search, file = file, rating = rating, autosuggest = booktitles)
+    return render_template("accordion_result.html", search = search, file = file, rating = rating, autosuggest = booktitles)
   
 @app.route("/download/<path:path>")
 def download(path):

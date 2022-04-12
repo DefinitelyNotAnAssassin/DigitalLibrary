@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="accordion accordion-flush" id="accordionFlushExample">
+
+{% for i in file %}
+
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{i._id}}" aria-expanded="false" aria-controls="flush-collapse{{i._id}}">
+        {{i.bookname}}
+      </button>
+    </h2>
+    <div id="flush-collapse{{i._id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{i._id}}" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+        {{i.bookname}}
+        <br>
+        {{i.author}}
+        <br class="my-3">
+         <a href="/feedback/{{i.bookname}}" class="card-link my-3">Rate</a>
+    <a href="/view/{{i.filename}}" class="card-link">Read</a>
+    <a href= class="card-link">Like</a>
+<a href="/addreadlist/{{i.bookname}}" class="card-link mx-2">Read Later</a>
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+
+
+{% endblock %}
+
+
+
+</div>
+
+
+
+{% block script %}
+
+
+{% endblock %}

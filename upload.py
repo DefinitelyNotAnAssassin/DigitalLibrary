@@ -2,12 +2,20 @@ import flask
 from flask import * 
 import sqlite3
 import os
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_,desc
 from flask_sqlalchemy import SQLAlchemy
 import uuid
-import flask_bcrypt
-app = Flask(__name__)
+from flask_bcrypt import Bcrypt
+from flask_session import Session
+from datetime import timedelta
 
+
+app = Flask(__name__)
+app.secret_key = "ThisIsSupposedToBeSecured"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+app.permanent_session_lifetime=timedelta(minutes=60)
+Session(app)
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["FILE_UPLOAD"] = f"{os.getcwd()}/files/"
@@ -18,7 +26,7 @@ app.config["SQLALCHEMY_BINDS"] = {
 }
 
 db = SQLAlchemy(app)
-
+bcrypt = Bcrypt(app)
 
 class libraryfiles(db.Model):
   __bind_key__ = "libraryfiles"
@@ -53,21 +61,31 @@ class user(db.Model):
   _id = db.Column("id", db.Integer, primary_key = True)
   username = db.Column("username", db.String(100))
   password =db.Column("password", db.String(255))
+  
+  def __init__(self, username, password):
+    self.username = username
+    self.password = password
+  
 class access(db.Model):
+  __bind_key__ = "admin"
   _id = db.Column("id", db.Integer, primary_key = True)
   key = db.Column("key",db.String(100))
   
+  def __init__(self, key):
+    self.key = key
 
 
 
 def verification(filename):
-  __bind_key__ = "admin"
   decision = input(f"A user is trying to upload {filename} Accept(Y) or Reject(N) : ")
   return decision 
 
-@app.route("/")
+@app.route("/add_content")
 def add_content():
-  return render_template("add_content.html")
+  if "is_logged" in session:
+    return render_template("add_content.html")
+  elif "is_logged" not in session:
+    return redirect(url_for('login'))
 
 @app.route("/admin/upload", methods = ["POST"])
 def upload():
@@ -92,6 +110,61 @@ def upload():
 @app.route("/register")
 def register():
   return render_template("register.html")
+
+@app.route("/register_user", methods = ["POST"])
+def register_user():
+  username = request.form["username"]
+  encryptedpass = bcrypt.generate_password_hash(request.form["password"])
+  addUser = user(username, encryptedpass)
+  db.session.add(addUser)
+  db.session.commit()
+  print(encryptedpass)
+  return redirect(url_for("login"))
+  
+@app.route("/")
+def login():
+  if "is_logged" in session:
+    return redirect(url_for("add_content"))
+  elif "is_logged" not in session:
+    return render_template("login.html")
+  
+@app.route("/verify_login", methods = ["POST"])
+def verify_login():
+  username = request.form["username"]
+  key = request.form["key"]
+  data = user.query.filter(user.username == username).first()
+  if data:
+    checkpass = bcrypt.check_password_hash(data.password, request.form["password"])
+    if checkpass:
+      accesskey = access.query.order_by(access._id.desc()).first()
+      if accesskey.key == key:
+        db.session.delete(accesskey)
+        db.session.commit()
+        session["is_logged"] = True
+        return redirect(url_for("add_content"))
+      elif accesskey.key != key:
+        return "INVALID ACCESS KEY"
+    elif not checkpass:
+      return "INVALID USERNAME PASSWORD"
+    
+    
+    
+  elif not data:
+    return "INVALID USERNAME PASSWORD"
+  
+  keys = access.query.order_by(access._id.desc()).first()
+  
+  
+@app.route("/generate_key", methods = ["POST"])
+def generate_key():
+  if request.get_json():
+    data = request.get_json()
+    accesskey = uuid.uuid4()
+    addkey = access(f"{accesskey}")
+    print(f"The access key is: {accesskey}")
+    db.session.add(addkey)
+    db.session.commit()
+    return "Hey"
 
 
   

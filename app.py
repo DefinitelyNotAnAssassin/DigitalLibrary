@@ -5,11 +5,13 @@ from sqlalchemy import and_, or_
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date, timedelta
 import time
+from flask_caching import Cache
 
-conn = sqlite3.connect("library.db")
-c = conn.cursor()
 
 app = Flask(__name__)
+app.config["CACHE_TYPE"] = "simple"
+cache = Cache(app)
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 
@@ -59,27 +61,14 @@ def redirect_url(default='index'):
     return request.args.get('next') or \
            request.referrer or \
            url_for(default)
+           
 @app.route("/")
+@cache.cached(timeout=1800)
 def index():
   return render_template("index.html", autosuggest = booktitles)
 
-@app.route("/admin/add_content")
-def add_content():
-  return render_template("add_content.html")
 
-@app.route("/admin/upload", methods = ["POST"])
-def upload():
-  booktitle = request.form["Bookname"]
-  file_name = request.form["Filename"].replace(" ", "-")
-  category = request.form["Category"]
-  author = request.form["Author"]
-  addFile = libraryfiles(booktitle, file_name, author, category)
-  db.session.add(addFile)
-  db.session.commit()
-  print(request.files)
-  file = request.files["File"]
-  file.save(os.path.join(app.config["FILE_UPLOAD"], file.filename.replace(" ", "-")))
-  return redirect(url_for("index"))
+
 
 
 @app.route("/search", methods = ["GET", "POST"])
@@ -106,14 +95,6 @@ def download(path):
 def view(path):
   return render_template("view.html", filename = f"{path}")
 
-
-@app.route("/viewer")
-def register():
-  return render_template("viewer.html")
-
-@app.route("/test")
-def test():
-  return render_template("testcard.html")
 
 @app.route("/feedback/<bookname>")
 def feedback(bookname):
@@ -163,6 +144,7 @@ def readlist():
 
 
 @app.route("/faq")
+@cache.cached(timeout = 0)
 def faq():
   return render_template("faq.html")
 

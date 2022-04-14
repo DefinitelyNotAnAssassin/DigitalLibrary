@@ -6,12 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import date, timedelta
 import time
 from flask_caching import Cache
-
+from flask_talisman import Talisman
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
-
+Talisman(app)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 

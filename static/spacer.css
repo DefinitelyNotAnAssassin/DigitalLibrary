@@ -1,0 +1,25 @@
+.space{
+  width: 100vw!important;
+  height: 25vh!important;
+  text-align: center;
+}
+
+.space-50{
+  width: 100vw!important;
+  height: 50vh!important;
+}
+
+
+.img{
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.card {
+  border-color: #fff!important;
+}
+
+.footer{
+  background: black!important;
+  color: white;
+}

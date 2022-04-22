@@ -15,8 +15,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="{{url_for('static', filename = 'main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename = 'scroll.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'media.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'reveal.css')}}">
+     <link rel="stylesheet" href="{{url_for('static', filename = 'spacer.css')}}">
+     <link rel="stylesheet" href="{{url_for('static', filename = 'text-manager.css')}}">
     <script src="{{url_for('static', filename = '/pdfjs-2.13.216-dist/build/pdf.js')}}" type="text/javascript" charset="utf-8"></script>
 
 
@@ -36,7 +38,7 @@
         <form id="form" action = "/search" method = "post">
          <div class="form-row align-items-center">
          <h1 class = "mx-auto mb-3"> CAA - Digital Library</h1>
-         <h6 class = "form-text text-muted">Over 220,000 websites use Crazy Egg to improve what's, working for what isn't and test new ideas.
+         <h6 class = "form-text text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer diam dui, egestas vitae sodales id, dignissim in sapien.
          </h6>
          
            <div class="col-md-12 input-group mb-4">
@@ -56,18 +58,12 @@
   <option value="Literature">Literature</option>
   <option value="History & Geography">History & Geography</option>
          </select>
-  
-      
-         
-       
-
-</div>
   <span class="input-group-btn">
          <button id = "btn"class="btn btn-primary">Search title  </button>
-        </span>
-           
-    
-           
+  </span>
+</div>
+  
+            
          </div>
        </form>
        </div>
@@ -76,35 +72,44 @@
 <body>
 
 
+<!-- REVEAL DIV CARD AREA -->
 
-<div class="space card"></div>
-    
+<div class="space card">
+  <h1 class="title reveal">About Us</h1>
+  
+  <p class="about-us-content reveal">
+    This is a normal text and should be centered properly.
+  </p>
+</div>
 
 
-<div class="text-card card">
-<h1 class="reveal">About Us</h1>
-<p class="text-card-content reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<div class="space card">
+  <h1 class="title reveal">Features</h1>
+  
+  <p class="about-us-content reveal">
+    Lorem Ipsum
+  </p>
+</div>
+
+<div class="space card">
+  <h1 class="title reveal">Contact Us</h1>
+  
+  <p class="about-us-content reveal">
+    Lorem Ipsum
+  </p>
+</div>
+
+<div class="space-50 card">
+  
+</div>
+<div class="space-50 card">
+
 </div>
 
 
 
-<div class="space2 card"></div>
-<div class="space3 carf"></div>
 
-<div class="text-card-right card">
-
-<h1 class="title-right reveal">Contact Us</h1>
-
-<h4 class="text-right-content reveal">Lorem ipsum dol or sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h4>
-
-</div>
-
-
-<div class="space4 card">
-</div>
-<div class="card space5"></div>
-
-
+<!-- TOAST AREA -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
@@ -121,70 +126,13 @@
 
 <script src="{{url_for('static', filename = '/bootstrap-5.1.3-dist/bootstrap-5.1.3-dist/js/bootstrap.min.js' )}}" type="text/javascript" charset="utf-8"></script>
 
-<script type="text/javascript">
-  window.addEventListener('scroll', reveal);
-
-  function reveal(){
-    var reveals = document.querySelectorAll('.reveal');
-
-    for(var i = 0; i < reveals.length; i++){
-
-      var windowheight = window.innerHeight;
-      var revealtop = reveals[i].getBoundingClientRect().top;
-      var revealpoint = 150;
-
-      if(revealtop < windowheight - revealpoint){
-        reveals[i].classList.add('active');
-        reveals[i].classList.add('text-card-content-type');
-      }
-      else{
-        reveals[i].classList.remove('active');
-        reveals[i].classList.remove('text-card-content-type');
-      }
-    }
-  }
-
- </script>
 
 
 
-<script type="text/javascript" charset="utf-8">
-  
-  
-  $('select').on('change', function() {
-  
-  let dataset = {
-    {% for i in autosuggest %}
-    "{{i.bookname}}": "{{i.category}}".replace("&amp;", "&"),
-    {% endfor %}
-    abc: "efg"
-  }
-  
-  Object.filter = (obj, predicate) => 
-                  Object.fromEntries(Object.entries(obj).filter(predicate));
+<!-- <script src="{{url_for('static', filename = '/toast.js' )}}" type="text/javascript" charset="utf-8"></script> -->
 
-let filtered = Object.filter(dataset, ([name, category]) => category === `${this.value}`)
-let availableTags = Object.keys(filtered)
-    
-    $( "#search" ).autocomplete({
-      source: availableTags
-    });
+<script src="{{url_for('static', filename = '/scroll.js' )}}" type="text/javascript" charset="utf-8"></script>
 
-});
-  
-  </script>
-
-<!-- TOAST -->
-<script type="text/javascript" charset="utf-8">
-  
-var toastLiveExample = document.getElementById('liveToast')
-
-bootstrap.Toast.Default.delay = 50000
-window.onload = function(){
-
-var toast = new bootstrap.Toast(toastLiveExample)
-    toast.show()
-}
-</script>
+<script src="{{url_for('static', filename = '/autosuggest.js' )}}" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

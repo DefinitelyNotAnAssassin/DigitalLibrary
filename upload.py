@@ -8,7 +8,7 @@ import uuid
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from datetime import timedelta
-
+from form import CourseForm
 
 app = Flask(__name__)
 app.secret_key = "ThisIsSupposedToBeSecured"
@@ -27,19 +27,22 @@ app.config["SQLALCHEMY_BINDS"] = {
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+secretKey = "012:09#910@81!0;73!1{}*9$0384/?31"
+
 
 class libraryfiles(db.Model):
   __bind_key__ = "libraryfiles"
   _id = db.Column("id", db.Integer, primary_key = True)
-  bookname = db.Column("bookname", db.String(100))
+  bookname = db.Column("bookname", db.String(255))
   filename = db.Column("filename", db.String(255))
-  author = db.Column("author", db.String(75))
+  author = db.Column("author", db.String(255))
   category = db.Column("category", db.String(75))
   def __init__(self, bookname, filename, author, category):
     self.bookname = bookname
     self.filename = filename
     self.author = author
     self.category = category
+    
     
 class messages(db.Model):
   __bind_key__ = "libraryfiles"
@@ -56,6 +59,7 @@ class messages(db.Model):
     self.date = date
     self.sender = sender
     self.rating = rating
+    
 class user(db.Model):
   __bind_key__ = "admin"
   _id = db.Column("id", db.Integer, primary_key = True)
@@ -65,7 +69,6 @@ class user(db.Model):
   def __init__(self, username, password):
     self.username = username
     self.password = password
-  
 class access(db.Model):
   __bind_key__ = "admin"
   _id = db.Column("id", db.Integer, primary_key = True)
@@ -73,8 +76,6 @@ class access(db.Model):
   
   def __init__(self, key):
     self.key = key
-
-
 
 def verification(filename):
   decision = input(f"A user is trying to upload {filename} Accept(Y) or Reject(N) : ")
@@ -95,18 +96,41 @@ def upload():
   author = request.form["Author"]
   addFile = libraryfiles(booktitle, file_name, author, category)
   decision = verification(file_name)
-  
   if decision.lower() == "y":
     db.session.add(addFile)
     db.session.commit()
-    print(request.files)
     file = request.files["File"]
-    file.save(os.path.join(app.config["FILE_UPLOAD"], file.filename.replace(" ", "-")))
+    file.save(os.path.join(app.config["FILE_UPLOAD"], file_name))
     return redirect(url_for("add_content"))
   elif decision.lower() == "n":
     return "<h1>File Upload Request Rejected</h1>"
 
 
+@app.route("/test", methods = ["GET", "POST"])
+def testing():
+  form = CourseForm()
+  
+  
+  return render_template("test.html", form=form, uuid = f"{uuid.uuid4()}")
+    
+    
+@app.route("/send", methods = ["POST"])
+def send():
+  form = CourseForm()
+  if form.validate_on_submit():
+    addFile = libraryfiles(form.Bookname.data, f"{form.Filename.data}.pdf", form.Author.data, form.Category.data)
+    decision = verification(form.Filename.data)
+    if decision.lower() == "y":
+      db.session.add(addFile)
+      db.session.commit()
+      file = request.files["File"]
+      file.save(os.path.join(app.config["FILE_UPLOAD"], f"{form.Filename.data}.pdf"))
+      return redirect(url_for("add_content"))
+    elif decision.lower() == "n":
+      return "<h1>File Upload Request Rejected</h1>"
+  elif not form.validate_on_submit():
+    return f"{form.errors}"
+  return redirect(url_for("testing"))
 @app.route("/register")
 def register():
   return render_template("register.html")
@@ -166,8 +190,15 @@ def generate_key():
     db.session.commit()
     return "Hey"
 
-
+@app.route("/check_valid")
+def check_valid():
+  form = CourseForm()
+  if form.validate():
+    data = True
+  else:
+    data = False
+  return {"data": data}
   
 if __name__ == "__main__":
   app.run(debug = True)
-  #db.create_all(bind = ['admin'])
+  db.create_all(bind = ['libraryfiles'])

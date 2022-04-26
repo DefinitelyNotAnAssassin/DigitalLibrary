@@ -12,6 +12,7 @@
 
   
     <meta charset="UTF-8">
+  
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -38,26 +39,13 @@
         <form id="form" action = "/search" method = "post">
          <div class="form-row align-items-center">
          <h1 class = "mx-auto mb-3"> CAA - Digital Library</h1>
-         <h6 class = "form-text text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer diam dui, egestas vitae sodales id, dignissim in sapien.
+         <h6 class = "form-text text-muted">
+           Lorem Ipsum
          </h6>
          
            <div class="col-md-12 input-group mb-4">
-         <input id = "search" name="search" placeholder = "Enter book title"type="text" class="form-control form-control-sm bg-transparent" name = "username" autocomplete="off"> </input> 
-        
-    
-        <select class="form-select" name="category" id="category">
-           <option value="" selected>Category</option>
-  <option value="General Works, Computer Science & Information">General Works, Computer Science & Information</option></option>
-  <option value="Philosophy & Psychology">Philosophy & Psychology</option>
-  <option value="Religion">Religion</option>
-    <option value="Social Sciences">Social Sciences</option>
-  <option value="Language">Language</option>
-  <option value="Science">Sciences</option>
-  <option value="Technology">Technology</option>
-  <option value="Arts & Recreation">Arts & Recreation</option>
-  <option value="Literature">Literature</option>
-  <option value="History & Geography">History & Geography</option>
-         </select>
+         {{form.Title(placeholder = "Enter book title", class = "form-control")}}
+        {{form.Category(class = "form-select")}}
   <span class="input-group-btn">
          <button id = "btn"class="btn btn-primary">Search title  </button>
   </span>
@@ -74,27 +62,27 @@
 
 <!-- REVEAL DIV CARD AREA -->
 
-<div class="space card">
-  <h1 class="title reveal">About Us</h1>
+<div class="space card reveal">
+  <h1 class="title">About Us</h1>
   
-  <p class="about-us-content reveal">
-    This is a normal text and should be centered properly.
+  <p class="about-us-content">
+    Las Piñas National Senior High School - CAA Campus is the premier home of excellent quality senior high school. education. 
   </p>
 </div>
 
 
-<div class="space card">
-  <h1 class="title reveal">Features</h1>
+<div class="space card reveal">
+  <h1 class="title">Features</h1>
   
-  <p class="about-us-content reveal">
+  <p class="about-us-content">
     Lorem Ipsum
   </p>
 </div>
 
-<div class="space card">
-  <h1 class="title reveal">Contact Us</h1>
+<div class="space card reveal">
+  <h1 class="title">Contact Us</h1>
   
-  <p class="about-us-content reveal">
+  <p class="about-us-content">
     Lorem Ipsum
   </p>
 </div>
@@ -102,9 +90,7 @@
 <div class="space-50 card">
   
 </div>
-<div class="space-50 card">
 
-</div>
 
 
 

@@ -1,6 +1,6 @@
 .space{
   width: 100vw!important;
-  height: 25vh!important;
+  height: 30vh!important;
   text-align: center;
 }
 
@@ -13,13 +13,20 @@
 .img{
   padding-left: 5vw;
   padding-right: 5vw;
+  text-align: center;
+  background-image: url("lib.jpg");
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  color: white;
 }
 
 .card {
-  border-color: #fff!important;
+  border-color: transparent!important;
+
 }
 
 .footer{
   background: black!important;
   color: white;
 }
+

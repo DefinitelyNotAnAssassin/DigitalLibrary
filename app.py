@@ -8,7 +8,7 @@ import time
 from flask_caching import Cache
 from flask_talisman import Talisman
 import uuid
-from form import CourseForm
+from form import SearchForm
 
 app = Flask(__name__)
 
@@ -59,8 +59,6 @@ class accesscode(db.Model):
   def __init__(self, accesskey):
     self.accesskey = accesskey
   
-
-booktitles = libraryfiles.query.all()
 def redirect_url(default='index'):
     return request.args.get('next') or \
            request.referrer or \
@@ -68,7 +66,8 @@ def redirect_url(default='index'):
            
 @app.route("/")
 def index():
-    return render_template("index.html", autosuggest = booktitles)
+    form = SearchForm()
+    return render_template("index.html", form = form)
 
 @app.route("/search", methods = ["GET", "POST"])
 def search():
@@ -76,8 +75,8 @@ def search():
     return redirect(url_for("index"))
   
   elif request.method == "POST":
-    search = f"%{request.form['search']}%"
-    category = f"{request.form['category']}"
+    search = f"%{request.form['Title']}%"
+    category = f"{request.form['Category']}"
     result = libraryfiles.query.filter(and_(libraryfiles.bookname.like(search), libraryfiles.category == category)).all()
     print(result)
     return render_template("accordion_result.html", file = result)
@@ -152,23 +151,16 @@ def faq():
   return render_template("faq.html")
 
 
-@app.route("/test")
-def testing():
-  return render_template("testerer.html", chirp_id = 123)
-  
-  
+    
+    
 @app.route("/get_title", methods = ["POST"])
 def send_title():
   data = request.get_json()
   print(data)
-  result = libraryfiles.query.filter(libraryfiles.category == data["category"]).all()
-  
-  booktitle = {}
-  for i in result:
-    booktitle[i.bookname] = i.category
-  
-  print(booktitle)
-  return booktitle
+  result = libraryfiles.query.with_entities(libraryfiles.bookname, libraryfiles.category).filter(libraryfiles.category == data["category"]).all()
+  dictor = dict(result)
+
+  return dictor
 if __name__ == "__main__":
   app.run(debug = True)
   

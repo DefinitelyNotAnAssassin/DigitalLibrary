@@ -1,10 +1,14 @@
 .title, .about-us-content{
   font-family: Courier;
-  padding-top: 10vh;
+  padding-top: 5vh;
   padding-left: 13vw;
   padding-right: 13vw;
-  max-height: 45vh;
   
+  
+}
+
+.title{
+  font-weight: bold;
 }
 
 .about-us-content{

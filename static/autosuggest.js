@@ -31,7 +31,7 @@ $('select').on('change', async function() {
                   Object.fromEntries(Object.entries(obj).filter(predicate));
 let filtered = Object.filter(dataset, ([name, category]) => category === `${this.value}`)
 let availableTags = Object.keys(filtered)
-    $( "#search" ).autocomplete({
+    $( "#Title" ).autocomplete({
       source: availableTags
     });
 

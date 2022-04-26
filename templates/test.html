@@ -8,63 +8,9 @@
 
 {% block content %}
 
-   <div class ="img d-flex flex-column min-vh-100 justify-content-center align-items-center"> 
-   
-   
-      <form  id="Form" action = "/send" method = "POST" enctype="multipart/form-data">
-          {{form.csrf_token}}
-        
-         <div class="form-row align-items-center">
-      
-        
-{% for i in form %}
-
-<div class="col-md-12 input-group mb-4">
-{% if i.name != "csrf_token" and i.name != "Category" and i.name != "Filename"%}
-{{ form["{}".format(i.name)](class="form-control mb-1", placeholder = "{}".format(i.name), autocomplete = "off") }}
-
-</div>
-<br />
-
-
-{% if form["{}".format(i.name)].errors %}
-<ul class="errors">
-                {% for error in form["{}".format(i.name)].errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-{% endif %}
-{% endif %}
-
-{% if i.name == "Filename" %}
-<div class="col-md-12 input-group mb-4">
-{{ form["{}".format(i.name)](class="form-control mb-1", placeholder = "{}".format(i.name), readonly = readonly, value = "{}".format(uuid) )}}
-</div>
-
-
-{% if form["{}".format(i.name)].errors %}
-<ul class="errors">
-                {% for error in form["{}".format(i.name)].errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-{% endif %}
-{% endif %}
-
-
-
-{% endfor %}
-
-{{form.Category(class="form-select")}}
-</div>
-<button class="btn btn-primary">Submit</button>
+  <form method="post" action="{{ url_for('delete_item', item_id=item_id) }}">
+    <button type="submit">Click Me</button>
 </form>
-</div>
-
-
-  
 
 {% endblock %}
 

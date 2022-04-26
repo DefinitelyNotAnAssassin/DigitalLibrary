@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
-#talisman = Talisman(app)
+talisman = Talisman(app)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 

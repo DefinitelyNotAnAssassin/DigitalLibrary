@@ -1,0 +1,26 @@
+Arguments: 
+  /data/data/com.termux/files/usr/bin/node /data/data/com.termux/files/usr/share/yarn/bin/yarn.js add global heroku-cli@latest
+
+PATH: 
+  /data/data/com.termux/files/usr/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  17.9.0
+
+Platform: 
+  android arm64
+
+Trace: 
+  Error: EACCES: permission denied, symlink '../uuid/dist/bin/uuid' -> '/storage/emulated/0/Projects/Digital_Library/node_modules/@heroku-cli/command/node_modules/.bin/uuid'
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

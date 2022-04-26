@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import date, timedelta
 import time
 from flask_caching import Cache
-from flask_talisman import Talisman
+from flask_talisman import Talisman, ALLOW_FROM
 import uuid
 from form import SearchForm
 
@@ -90,6 +90,7 @@ def download(path):
     abort(404)
 
 @app.route("/view")
+@talisman(content_security_policy=ALLOW_FROM, content_security_policy_allow_from='*')
 def view():
   return render_template("view.html")
 

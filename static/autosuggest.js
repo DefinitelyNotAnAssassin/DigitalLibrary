@@ -1,40 +1,50 @@
 
-
-
-
-async function loadNames(selectval) {
-  var your_data = {
-    "category": selectval
-  }
-  const response = await fetch(`/get_title`, {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify(your_data),
-    cache: "no-cache",
-    headers: new Headers({
-      "content-type": "application/json"
-    })
+async function loadNames(selectval, inputval) {
+var your_data = {
+  "category": selectval,
+  "search": `%${inputval}%`
+}
+const response = await fetch(`/get_title`, {
+  method: "POST",
+  credentials: "include",
+  body: JSON.stringify(your_data),
+  cache: "no-cache",
+  headers: new Headers({
+    "content-type": "application/json"
   })
-  const names = await response.json();
-  return names
-  
-  
-  // logs [{ name: 'Joker'}, { name: 'Batman' }]
+})
+const names = await response.json();
+return names
 }
 
-$('select').on('change', async function() {
-  var selectval = $('select').val()
-  var dataset = await loadNames(selectval)
- 
+
+
+
+/* $("#Title").on("keyup", async function(){
+  var data = await loadNames($('select').val(), $('#Title').val())
   
-  Object.filter = (obj, predicate) => 
-                  Object.fromEntries(Object.entries(obj).filter(predicate));
-let filtered = Object.filter(dataset, ([name, category]) => category === `${this.value}`)
-let availableTags = Object.keys(filtered)
-    $( "#Title" ).autocomplete({
-      source: availableTags
-    });
+  
+  
+  $( "#Title" ).autocomplete({
+  source: data,
+  minLength: 0,
+  search: $('#Title').val()
+})
 
 })
+*/
+var debounce = null
+$('#Title').on('keyup', async function(){
+   clearTimeout(debounce);
+   debounce = setTimeout(async function(){
+     
+     var data = await loadNames($("select").val(), $('#Title').val())
+     
+      $("#Title").autocomplete({
+     source: data,
+   })
+    $("#Title").autocomplete("enable");
+    $('#Title').autocomplete("search", $("#Title").val())
+   }, 800)
   
-
+});

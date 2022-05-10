@@ -8,11 +8,21 @@
 
 {% block content %}
 
-  <form method="post" action="{{ url_for('delete_item', item_id=item_id) }}">
-    <button type="submit">Click Me</button>
+<form action="/send" method="POST" enctype="multipart/form-data">
+{{form.csrf_token}}
+{{form.Bookname(class = "form-control", autocomplete = "off")}}
+{{form.Filename(class = "form-control", readonly = "readonly", value = "{}".format(uuid))}}
+{{form.Category(class = "form-select")}}
+{{form.File(class = "form-control")}}
+
+<button type="submit" class="btn btn-primary">Submit</button>
+
 </form>
 
+
 {% endblock %}
+
+
 
 
 {% block script %}

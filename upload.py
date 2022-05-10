@@ -30,36 +30,27 @@ bcrypt = Bcrypt(app)
 secretKey = "012:09#910@81!0;73!1{}*9$0384/?31"
 
 
-class libraryfiles(db.Model):
+class Category(db.Model):
   __bind_key__ = "libraryfiles"
   _id = db.Column("id", db.Integer, primary_key = True)
-  bookname = db.Column("bookname", db.String(255))
-  filename = db.Column("filename", db.String(255))
-  author = db.Column("author", db.String(255))
-  category = db.Column("category", db.String(75))
-  def __init__(self, bookname, filename, author, category):
+  book_category = db.Column("book_category", db.String)
+  booklist = db.relationship('Books', backref = "book_category")
+  def __init__(self, book_category):
+    self.book_category = book_category
+
+
+
+class Books(db.Model):
+  __bind_key__ = "libraryfiles"
+  _id = db.Column("id", db.Integer, primary_key = True)
+  bookname = db.Column("bookname", db.String)
+  filename = db.Column("filename", db.String)
+  category = db.Column(db.Integer, db.ForeignKey('category.book_category'))
+  def __init__(self, bookname,filename):
     self.bookname = bookname
     self.filename = filename
-    self.author = author
-    self.category = category
-    
-    
-class messages(db.Model):
-  __bind_key__ = "libraryfiles"
-  _id = db.Column("id", db.Integer, primary_key= True)
-  bookname = db.Column("bookname", db.String(100))
-  content = db.Column("content", db.String(1000))
-  date = db.Column("date", db.String(100))
-  sender = db.Column("sender", db.String(100))
-  rating = db.Column("rating", db.String(25))
 
-  def __init__(self, bookname, content, date, sender, rating):
-    self.bookname = bookname
-    self.content = content
-    self.date = date
-    self.sender = sender
-    self.rating = rating
-    
+
 class user(db.Model):
   __bind_key__ = "admin"
   _id = db.Column("id", db.Integer, primary_key = True)
@@ -79,6 +70,7 @@ class access(db.Model):
 
 def verification(filename):
   decision = input(f"A user is trying to upload {filename} Accept(Y) or Reject(N) : ")
+  
   return decision 
 
 @app.route("/add_content")
@@ -88,29 +80,11 @@ def add_content():
   elif "is_logged" not in session:
     return redirect(url_for('login'))
 
-@app.route("/admin/upload", methods = ["POST"])
-def upload():
-  booktitle = request.form["Bookname"]
-  file_name = request.form["Filename"].replace(" ", "-")
-  category = request.form["Category"]
-  author = request.form["Author"]
-  addFile = libraryfiles(booktitle, file_name, author, category)
-  decision = verification(file_name)
-  if decision.lower() == "y":
-    db.session.add(addFile)
-    db.session.commit()
-    file = request.files["File"]
-    file.save(os.path.join(app.config["FILE_UPLOAD"], file_name))
-    return redirect(url_for("add_content"))
-  elif decision.lower() == "n":
-    return "<h1>File Upload Request Rejected</h1>"
 
 
 @app.route("/test", methods = ["GET", "POST"])
 def testing():
   form = CourseForm()
-  
-  
   return render_template("test.html", form=form, uuid = f"{uuid.uuid4()}")
     
     
@@ -118,19 +92,23 @@ def testing():
 def send():
   form = CourseForm()
   if form.validate_on_submit():
-    addFile = libraryfiles(form.Bookname.data, f"{form.Filename.data}.pdf", form.Author.data, form.Category.data)
-    decision = verification(form.Filename.data)
+    addBook = Books(form.Bookname.data, f"{form.Filename.data}.pdf")
+    decision = verification(form.Bookname.data)
     if decision.lower() == "y":
-      db.session.add(addFile)
+      db.session.add(addBook)
+      ctgry = Category.query.filter(Category.book_category == form.Category.data).first()
+      ctgry.booklist.append(addBook)
       db.session.commit()
-      file = request.files["File"]
+      file = form.File.data
       file.save(os.path.join(app.config["FILE_UPLOAD"], f"{form.Filename.data}.pdf"))
-      return redirect(url_for("add_content"))
+      return "Uploaded!"
     elif decision.lower() == "n":
-      return "<h1>File Upload Request Rejected</h1>"
-  elif not form.validate_on_submit():
-    return f"{form.errors}"
-  return redirect(url_for("testing"))
+      return "Upload Denied"
+    return "hello"
+  
+
+  return "!!!"
+    
 @app.route("/register")
 def register():
   return render_template("register.html")
@@ -198,7 +176,11 @@ def check_valid():
   else:
     data = False
   return {"data": data}
+
+@app.route("/playground")
+def playground():
   
+  return "hi"
 if __name__ == "__main__":
   app.run(debug = True)
   db.create_all(bind = ['libraryfiles'])

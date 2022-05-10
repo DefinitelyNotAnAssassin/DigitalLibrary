@@ -37,7 +37,6 @@ class Category(db.Model):
   booklist = db.relationship('Books',lazy='dynamic', backref=db.backref('book_category', lazy='joined'))
   def __init__(self, book_category):
     self.book_category = book_category
-    
 class Books(db.Model):
   _id = db.Column("id", db.Integer, primary_key = True)
   bookname = db.Column("bookname", db.String)
@@ -46,7 +45,6 @@ class Books(db.Model):
   def __init__(self, bookname,filename):
     self.bookname = bookname
     self.filename = filename
-
 def redirect_url(default='index'):
     return request.args.get('next') or \
            request.referrer or \

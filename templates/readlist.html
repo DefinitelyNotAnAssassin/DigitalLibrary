@@ -10,34 +10,25 @@
 
 
 
-{% for i in file %}
 
-{% if i.bookname in bookname %}
+{% for i in data %}
 <div class="card" style="width: 100vw;">
   <div class="card-body">
     <h5 class="card-title mb-1">{{i.bookname}}</h5>
-    <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.author}}     
-    
-    </h6>
+
     <h6 class="card-subtitle mb-2 mt-1 text-muted">{{i.category}}</h6>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
     <a href="/feedback/{{i.bookname}}" class="card-link">Rate</a>
-    <a href="/view/{{i.filename}}" class="card-link">Read</a>
+    <a href="/view?BOOK={{i.filename}}" class="card-link">Read</a>
   </div>
 </div>
 
-{% endif %}
-
 {% endfor %}
 
-{% endblock %} 
+{% endblock %}
 
 
 {% block script %} 
-
-<script src="{{url_for('static', filename = "jquery.js")}}" type="text/javascript" charset="utf-8"></script>
-
-<script src="{{url_for('static', filename = "/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.js")}}" type="text/javascript" charset="utf-8"></script>
 
  
   

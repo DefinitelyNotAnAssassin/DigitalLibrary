@@ -19,7 +19,7 @@ cache = Cache(app)
 
 #talisman = Talisman(app)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///100kbooks.sqlite3'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///library.sqlite3'
 
 app.config["FILE_UPLOAD"] = f"{os.getcwd()}/files/"
 
@@ -37,6 +37,7 @@ class Category(db.Model):
   booklist = db.relationship('Books',lazy='dynamic', backref=db.backref('book_category', lazy='joined'))
   def __init__(self, book_category):
     self.book_category = book_category
+    
 class Books(db.Model):
   _id = db.Column("id", db.Integer, primary_key = True)
   bookname = db.Column("bookname", db.String)
@@ -119,7 +120,8 @@ def addreadlist(bookname):
 @app.route("/readlist")
 def readlist():
   if "read_later" in session:
-   return render_template("readlist.html", bookname = session["read_later"])
+    data = Books.query.filter(Books.bookname.in_(session["read_later"])).all()
+    return render_template("readlist.html", data = data)
    
   elif "read_later" not in session:
     return redirect(redirect_url())

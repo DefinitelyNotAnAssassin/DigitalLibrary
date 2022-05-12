@@ -40,7 +40,9 @@
 
     <div class ="img d-flex flex-column min-vh-100 justify-content-center align-items-center">  
         <form id="form" action = "/search" method = "post">
+          {{form.csrf_token}}
          <div class="form-row align-items-center">
+           
          <h1 class = "mx-auto mb-3">Project SIPI </h1>
          <h6 class = "form-text text-muted">
            Supplementary Indirect Production of Instructional Materials for Learners

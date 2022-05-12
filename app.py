@@ -63,12 +63,14 @@ def search():
   if request.method == "GET":
     return redirect(url_for("index"))
   elif request.method == "POST":
-    search = f"%{request.form['Title']}%"
-    category = f"{request.form['Category']}"
-    result = Category.query.filter(Category.book_category == category).first()
-    
-    return render_template("accordion_result.html", file = result.booklist.filter(Books.bookname.like(search)).limit(15))
-  
+    form = SearchForm()
+    if form.validate_on_submit():
+      search = f"%{form.Title.data}%"
+      result = Category.query.filter(Category.book_category == form.Category.data).first()
+      return render_template("testresult.html", file = result.booklist.filter(Books.bookname.like(search)).limit(15))
+    else:
+      print(form.errors)
+      return "Form Error!"
 
 @app.route("/download/<path:path>")
 def download(path):
@@ -81,29 +83,6 @@ def download(path):
 def view():
   return render_template("view.html")
 
-@app.route("/feedback/<bookname>")
-def feedback(bookname):
-  comment = messages.query.filter(messages.bookname == bookname).all()
-  return render_template("review.html", bookname = bookname, comment = comment)
-  
-
-
-@app.route("/addfeedback", methods = ["POST"])
-def addfeedback():
-  sender = request.form["username"]
-  comment = request.form["feedback"]
-  rating = request.form["rate"]
-  bookname = request.form["bookname"]
-  ratings = ["1", "2", "3", "4", "5"]
-  if rating in ratings:
-    currentdate = date.today()
-    addMsg = messages(bookname, comment, currentdate.strftime("%m/%d/%Y"), sender, rating)
-    db.session.add(addMsg)
-    db.session.commit()
-    return redirect(url_for('index'))
-  elif rating not in ratings:
-    return "Rating Rejected"
-  
 @app.route("/addreadlist/<bookname>")
 def addreadlist(bookname):
   if "read_later" not in session:
@@ -112,7 +91,6 @@ def addreadlist(bookname):
   a.append(bookname)
   session["read_later"] = a
   print(f"{bookname} Added to the session")
-    
   return redirect(redirect_url())
   
 @app.route("/readlist")
@@ -150,17 +128,7 @@ def send_title():
   
 @app.route("/test")
 def test():
-  #for i in range(100000):
-  #  data = Books(f"{uuid.uuid4()}", f"{uuid.uuid4()}")
-  #  db.session.add(data)
- #   qry = Category.query.get(random.randint(1,10))
- #   qry.booklist.append(data)
-#    db.session.commit()
-  start = time.time()
-  result = Category.query.filter(Category.book_category == "Science").first()
-  data = result.booklist.filter(Books.bookname.like("%Book%")).limit(50)
-  end = time.time()
-  print(end-start)
+
   return "Hello"
   
   
